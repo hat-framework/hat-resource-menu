@@ -1,9 +1,9 @@
 {
-    "name": "hatframework/resources/menu",
+    "name": "hatframework/hat-resource-menu",
     "type": "library",
     "description": "",
     "keywords": [],
-    "homepage": "https://github.com/hat-framework/resources/menu",
+    "homepage": "https://github.com/hat-framework/hat-resource-menu",
     "license": "MIT",
     "authors": [
         {
