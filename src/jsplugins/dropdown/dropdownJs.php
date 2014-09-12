@@ -38,8 +38,8 @@ class dropdownJs extends JsPlugin implements jsmenu{
 
     private function Scripts(){
         $this->Html->LoadJquery();
-        $this->Html->LoadJs("$this->url/scripts/dropdown");
-        $this->Html->LoadExternCss("$this->url/scripts/dropdown");
+        //$this->Html->LoadJs("$this->url/scripts/dropdown");
+        //$this->Html->LoadExternCss("$this->url/scripts/dropdown");
     }
 
 }
