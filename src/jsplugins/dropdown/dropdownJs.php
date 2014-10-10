@@ -4,8 +4,7 @@ use classes\Classes\JsPlugin;
 class dropdownJs extends JsPlugin implements jsmenu{
 
     public function init() {
-        $this->LoadJsPlugin("menu/menu", "menu");
-        $this->menu->imprime();
+        $this->LoadJsPlugin("menu/menu", "menu")->imprime();
     }
     
     static private $instance;
@@ -19,10 +18,12 @@ class dropdownJs extends JsPlugin implements jsmenu{
     public function imprime() {
         $this->imprimir = false;
         $this->menu->imprime();
+        return $this;
     }
     
     public function reset(){
         $this->imprimir = true;
+        return $this;
     }
     
     public function draw($menu, $class = "", $id = 'menu-dropdown'){
@@ -30,7 +31,7 @@ class dropdownJs extends JsPlugin implements jsmenu{
         $this->menu->imprime();
         if(!is_array($menu)){return false;}
         $this->Scripts();
-        $var = $this->menu->draw($menu, "dropdown $class", $id);
+        $var = $this->menu->draw($menu, "dropdown nav navbar-nav $class", $id);
         if(!$this->imprimir) { return $var;}
         echo $var;
 

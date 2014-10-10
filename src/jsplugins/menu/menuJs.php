@@ -13,6 +13,12 @@ class menuJs extends JsPlugin implements jsmenu{
     private $liclass = "";
     public function setLiClass($class){
         $this->liclass = $class;
+        return $this;
+    }
+    
+    public function imprime(){
+        $this->print = false;
+        return $this;
     }
     
     static private $instance;
@@ -22,18 +28,14 @@ class menuJs extends JsPlugin implements jsmenu{
         return self::$instance;
     }
 
-    public function imprime(){
-        $this->print = false;
-    }
-    
-    public function draw($menu, $class = "menu", $id = ""){
+    public function draw($menu, $class = "menu nav navbar-nav ", $id = ""){
         $this->level = 0;
         static $i = 0; $i++;
         $id = ($id == "") ? "menu_$i" : "$id";
         $var = "";
         //desenhando o menu
         if(!empty($menu)){
-            $var  = "<ul class='nav navbar-nav $class' id='$id'>";
+            $var  = "<ul class='$class' id='$id'>";
             $var .= $this->drawMenu($menu);
             $var .= "</ul>";
         }
@@ -69,7 +71,7 @@ class menuJs extends JsPlugin implements jsmenu{
             }
             
             $current = ($link == CURRENT_URL);
-            $class   = ($current)?"current_page":"";
+            $class   = ($current)?"current_page active":"";
             //echoBr($link);
             //carrega o link a ser colocado no menu
             $protected_link = $this->Html->getActionLinkIfHasPermission($link, "$icon$name$icon2", $color_type, "a_$id", '', $extra);
