@@ -27,13 +27,15 @@ class dropdownJs extends JsPlugin implements jsmenu{
     }
     
     public function draw($menu, $class = "", $id = 'menu-dropdown'){
-
-        $this->menu->imprime();
         if(!is_array($menu)){return false;}
         $this->Scripts();
-        $var = $this->menu->draw($menu, "dropdown nav navbar-nav $class", $id);
-        if(!$this->imprimir) { return $var;}
-        echo $var;
+        
+        $var = $this->menu->imprime()
+                ->setLiClass('dropdown')
+                ->draw($menu, "dropdown nav navbar-nav $class", $id);
+        if($this->imprimir) { echo $var;}
+        $this->reset();
+        return $var;
 
     }
 

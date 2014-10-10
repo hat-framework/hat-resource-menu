@@ -133,8 +133,7 @@ class menuJs extends JsPlugin implements jsmenu{
         $list = "";
         
         //verifica se a variável temporária está vazia
-        $c  = "dropdown";
-        $c .= (trim($class) === "")        ?"":" $class";
+        $c  = (trim($class) === "")        ?"":" $class";
         $c .= (trim($this->liclass) === "")?"":" $this->liclass";
         if($concat != "" || $link != "")  $list  = "<li id='$id' class='$c'> $protected_link $concat </li>";
         elseif($link == "#") $list  = "";
