@@ -33,7 +33,7 @@ class menuJs extends JsPlugin implements jsmenu{
         $var = "";
         //desenhando o menu
         if(!empty($menu)){
-            $var  = "<ul class='nav navbar-nav $class' id='$id'>";
+            $var  = "<ul class='$class ' id='$id'>";
             $var .= $this->drawMenu($menu);
             $var .= "</ul>";
         }
@@ -51,32 +51,21 @@ class menuJs extends JsPlugin implements jsmenu{
         //inicializa as variaveis
         $var = "";
         $this->level++;
-        $color_type  = "color$this->level";
+        $color_type = "color$this->level";
         foreach($menu as $name => $array){
 
             //seta as variaveis
-            $ctype   = $color_type;
-            $extra   = "";
-            $icon    = $this->getIcon($array);
-            $icon2   = "";
             $id      = $this->getId($name, $array);
             $link    = $this->getLink($name, $array);
-            if(is_array($array) && !empty($array)){
-                $ctype .= ' dropdown-toggle';
-                $extra .= ' data-toggle="dropdown"';
-                $itemp  = array('__icon'=>'caret');
-                $icon2  = $this->getIcon($itemp);
-            }
-            
             $current = ($link == CURRENT_URL);
             $class   = ($current)?"current_page":"";
-            //echoBr($link);
+
             //carrega o link a ser colocado no menu
-            $protected_link = $this->Html->getActionLinkIfHasPermission($link, "$icon$name$icon2", $color_type, "a_$id", '', $extra);
+            $protected_link = $this->Html->getActionLinkIfHasPermission($link, $name, $color_type, "a_$id");
             
             //se link é vazio, então usuário não tem permissão de acessá-lo
             if($protected_link == "") {continue;}
-            if($current) { $protected_link = $this->Html->getActionLinkIfHasPermission("#", "$icon$name", "$color_type active", "a_$id", '', $extra);}
+            if($current) $protected_link = $this->Html->getActionLinkIfHasPermission("#", $name, "$color_type active", "a_$id");
             
             //gera o html do menu e concatena
             $var .= $this->geraMenu($array, $link, $id, "$class $color_type", $protected_link);
@@ -84,15 +73,6 @@ class menuJs extends JsPlugin implements jsmenu{
         }
         $this->level--;
         return $var;
-    }
-    
-    private function getIcon(&$array){
-        $icon = "";
-        if(is_array($array) && array_key_exists('__icon', $array)){
-            $icon = "<i class='{$array['__icon']}'></i>";
-            unset($array['__icon']);
-        }
-        return $icon;
     }
     
     private function getId($name, &$array){
@@ -121,7 +101,7 @@ class menuJs extends JsPlugin implements jsmenu{
         //se menu possui subitens, desenha o menu dos subitens
         if(is_array($array) && !empty($array)){
             $temp = $this->drawMenu($array);
-            if($temp != "") $concat = "<ul class='dropdown-menu'>$temp</ul>"; 
+            if($temp != "") $concat = "<ul>$temp</ul>"; 
             elseif($protected_link == "")$concat = "";
         }
 
@@ -131,11 +111,10 @@ class menuJs extends JsPlugin implements jsmenu{
         $list = "";
         
         //verifica se a variável temporária está vazia
-        $c  = "dropdown";
-        $c .= (trim($class) === "")        ?"":" $class";
-        $c .= (trim($this->liclass) === "")?"":" $this->liclass";
-        if($concat != "" || $link != "")  $list  = "<li id='$id' class='$c'> $protected_link $concat </li>";
+        if($concat != "" || $link != "")  $list  = "<li id='$id' class='$this->liclass $class'> $protected_link $concat </li>";
         elseif($link == "#") $list  = "";
         return $list;
     }
 }
+
+?>
