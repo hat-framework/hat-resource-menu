@@ -16,6 +16,12 @@ class menuJs extends JsPlugin implements jsmenu{
         return $this;
     }
     
+    private $lioneclass = "";
+     public function setLiOneClass($class){
+        $this->lioneclass = $class;
+        return $this;
+    }
+    
     public function imprime(){
         $this->print = false;
         return $this;
@@ -135,6 +141,7 @@ class menuJs extends JsPlugin implements jsmenu{
         //verifica se a variável temporária está vazia
         $c  = (trim($class) === "")        ?"":" $class";
         $c .= (trim($this->liclass) === "")?"":" $this->liclass";
+        $c .= (trim($this->lioneclass) != "" && $this->level == 1)?" $this->lioneclass":"";
         if($concat != "" || $link != "")  $list  = "<li id='$id' class='$c'> $protected_link $concat </li>";
         elseif($link == "#") $list  = "";
         return $list;
