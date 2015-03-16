@@ -76,6 +76,15 @@ class menuJs extends JsPlugin implements jsmenu{
                 $icon2  = $this->getIcon($itemp);
             }
             
+            elseif(!is_array($array) && strpos($array, "__") !== false){
+                //die($name);
+                if(method_exists($this, $array)){
+                    $var .= $this->$array();
+                    continue;
+                }
+            }
+            
+            
             $current = ($link == CURRENT_URL);
             $class   = ($current)?"current_page active":"";
             //echoBr($link);
@@ -94,6 +103,10 @@ class menuJs extends JsPlugin implements jsmenu{
         return $var;
     }
     
+    private function __divider(){
+        return '<li role="presentation" class="divider"></li>';
+    }
+    
     private function getIcon(&$array){
         $icon = "";
         if(is_array($array) && array_key_exists('__icon', $array)){
@@ -107,18 +120,17 @@ class menuJs extends JsPlugin implements jsmenu{
         if(is_array($array) && array_key_exists('__id', $array)){
             $id = GetPlainName($array['__id']);
             unset($array['__id']);
-        }else $id = GetPlainName($name);
+        }else {$id = GetPlainName($name);}
         return $id;
     }
     
     private function getLink($name, &$array){
         $link = "#";
-        if(is_array($array)){
-            if(array_key_exists($name, $array)){
-                $link = $array[$name];
-                unset($array[$name]);
-            }
-        }else $link = $array;
+        if(!is_array($array)){return $array;}
+        if(array_key_exists($name, $array)){
+            $link = $array[$name];
+            unset($array[$name]);
+        }
         return $link;
     }
     
@@ -129,12 +141,12 @@ class menuJs extends JsPlugin implements jsmenu{
         //se menu possui subitens, desenha o menu dos subitens
         if(is_array($array) && !empty($array)){
             $temp = $this->drawMenu($array);
-            if($temp != "") $concat = "<ul class='dropdown-menu'>$temp</ul>"; 
-            elseif($protected_link == "")$concat = "";
+            if($temp != "") {$concat = "<ul class='dropdown-menu'>$temp</ul>"; }
+            elseif($protected_link == ""){$concat = "";}
         }
 
         //se menu não possui subitens e o link está vazio
-        elseif($protected_link == "") $concat = "";
+        elseif($protected_link == "") {$concat = "";}
 
         $list = "";
         
@@ -142,8 +154,8 @@ class menuJs extends JsPlugin implements jsmenu{
         $c  = (trim($class) === "")        ?"":" $class";
         $c .= (trim($this->liclass) === "")?"":" $this->liclass";
         $c .= (trim($this->lioneclass) != "" && $this->level == 1)?" $this->lioneclass":"";
-        if($concat != "" || $link != "")  $list  = "<li id='$id' class='$c'> $protected_link $concat </li>";
-        elseif($link == "#") $list  = "";
+        if($concat != "" || $link != "")  {$list  = "<li id='$id' class='$c'> $protected_link $concat </li>";}
+        elseif($link == "#") {$list  = "";}
         return $list;
     }
 }
